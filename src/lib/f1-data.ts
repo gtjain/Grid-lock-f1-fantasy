@@ -37,7 +37,24 @@ export const DRIVERS = [
     { name: "Valtteri Bottas", team: "Cadillac" }
 ];
 
-export const RACES = [
+export type Race = {
+    id: number;
+    name: string;
+    venue: string;
+    country: string;
+    flag: string;
+    date: string;
+    time: string;
+    status: "upcoming" | "completed";
+    sprint?: boolean;
+    saturday?: boolean;
+    results?: {
+        top3: string[];
+        winningTeam: string;
+    };
+};
+
+export const RACES: Race[] = [
     { id: 1, name: "Australian Grand Prix", venue: "Melbourne", country: "Australia", flag: "🇦🇺", date: "Mar 08, 2026", time: "09:30 AM UTC", status: "upcoming" },
     { id: 2, name: "Chinese Grand Prix", venue: "Shanghai", country: "China", flag: "🇨🇳", date: "Mar 22, 2026", time: "12:30 PM UTC", status: "upcoming", sprint: true },
     { id: 3, name: "Japanese Grand Prix", venue: "Suzuka", country: "Japan", flag: "🇯🇵", date: "Apr 05, 2026", time: "10:30 AM UTC", status: "upcoming" },
