@@ -53,9 +53,12 @@ export default function PicksPage() {
     const selectedRace = RACES.find(r => r.id === selectedRound) || RACES[0];
     const currentPicks = allRacePicks[selectedRound] || { winningTeam: "", top3: ["", "", ""] };
 
+    const bahrainRace = RACES.find(r => r.name === "Bahrain Grand Prix");
+    const isPastBahrain = bahrainRace ? new Date() > new Date(`${bahrainRace.date} ${bahrainRace.time}`) : false;
+
     // Logic: Past races or synced results are locked.
     const isRaceLocked = selectedRace.status === "completed" || currentPicks.isLocked;
-    const isLocked = tab === "season" ? isSeasonLocked : isRaceLocked;
+    const isLocked = tab === "season" ? (isSeasonLocked || isPastBahrain) : isRaceLocked;
 
     const nextRace = RACES.find(r => r.status === "upcoming") || RACES[0];
     const raceClosesIn = isRaceLocked ? "Event Closed" : "2d 14h";
@@ -75,7 +78,6 @@ export default function PicksPage() {
                     return;
                 }
                 await saveSeasonPicks(seasonPicks.constChamp, seasonPicks.driverChamp, seasonPicks.top3);
-                setIsSeasonLocked(true);
             }
             alert("Picks successfully saved to the Paddock Cloud!");
         } catch (error) {
@@ -124,8 +126,8 @@ export default function PicksPage() {
 
                     <div className="hidden sm:flex items-center space-x-4">
                         <span className="text-sm font-semibold flex items-center text-slate-300">
-                            <AlertCircle className={`w-4 h-4 mr-1 ${isLocked ? "text-red-400" : "text-orange-400"}`} />
-                            {tab === "season" ? (isSeasonLocked ? "Locked for Season" : "Open for Season") : (isRaceLocked ? "Race Locked" : `Closes in ${raceClosesIn}`)}
+                            <AlertCircle className={`w-4 h-4 mr-1 ${isLocked ? "text-red-400" : "text-[var(--color-neon-blue)]"}`} />
+                            {tab === "season" ? (isLocked ? "Locked for Season" : "Open until Bahrain GP") : (isRaceLocked ? "Race Locked" : `Closes in ${raceClosesIn}`)}
                         </span>
                         <button
                             onClick={handleSave}
@@ -148,6 +150,17 @@ export default function PicksPage() {
             >
                 {tab === "season" && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="md:col-span-2 bg-slate-800/80 border border-slate-700/50 rounded-2xl p-4 flex items-start gap-4 shadow-lg shadow-black/20">
+                            <AlertCircle className="w-6 h-6 text-[var(--color-neon-blue)] shrink-0 mt-0.5" />
+                            <div>
+                                <p className="text-sm font-bold text-slate-200">
+                                    Season picks can be updated until the start of the <strong className="text-white">Bahrain Grand Prix</strong>.
+                                </p>
+                                <p className="text-xs font-medium text-slate-400 mt-1">
+                                    After {bahrainRace?.date} at {bahrainRace?.time}, all season predictions will be firmly locked in!
+                                </p>
+                            </div>
+                        </div>
                         <div className="space-y-6">
                             <h2 className="text-lg font-extrabold flex items-center px-1">
                                 <Trophy className="w-5 h-5 mr-2 text-yellow-400" /> Champions
