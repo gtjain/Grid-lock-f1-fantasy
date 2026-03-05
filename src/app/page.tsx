@@ -29,7 +29,7 @@ export default function LandingPage() {
 
         <div className="space-y-3">
           <h1 className="text-4xl font-extrabold tracking-tight text-white">
-            Paddock <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-f1-red)] to-orange-400">Picks</span>
+            Grid <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-f1-red)] to-orange-400">Lock</span>
           </h1>
           <p className="text-slate-400 text-sm font-medium">
             The ultimate premium F1 fantasy racing experience among close friends.

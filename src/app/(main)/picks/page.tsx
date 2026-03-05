@@ -79,7 +79,7 @@ export default function PicksPage() {
                 }
                 await saveSeasonPicks(seasonPicks.constChamp, seasonPicks.driverChamp, seasonPicks.top3);
             }
-            alert("Picks successfully saved to the Paddock Cloud!");
+            alert("Picks successfully saved to the Grid Lock Cloud!");
         } catch (error) {
             console.error(error);
             alert("Failed to save picks. Please check your connection.");
